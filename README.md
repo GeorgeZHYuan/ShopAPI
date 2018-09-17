@@ -50,7 +50,7 @@ Shopify's intern challenge the Winter 2019 Developer Position.
 ### Server Design
 
 
-# API Documenation
+# API Documentation
 ## Line Items
 ### (C) Create line item
 Create Products or Services
