@@ -2,10 +2,10 @@
 Shopify's intern challenge the Winter 2019 Developer Position.
 
 # Table of Contents
-* [Summary of Design](#Summary-of-Design)
-  * [Use Cases in Consideration](#Use-Cases-in-Consideration)
-  * [Database Design](#Database-Design]
-  * [Server Design](#Server-Design)
+* [Summary of Design](#summary-of-design)
+  * [Use Cases in Consideration](#use-cases-in-consideration)
+  * [Database Design](#database-design)
+  * [Server Design](#server-design)
  
 * API Documentation
   * Line Items
