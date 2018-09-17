@@ -51,9 +51,12 @@ Shopify's intern challenge the Winter 2019 Developer Position.
 
 
 # API Documentation
+All api endpoints can be accessed through the `api/v1/` route
+
 ## Line Items
 ### (C) Create line item
-Create Products or Services
+Create Products or Services.
+
 
 ### (R) Get line item
 ### (U) Change line item
