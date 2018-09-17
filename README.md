@@ -39,9 +39,8 @@ Shopify's intern challenge the Winter 2019 Developer Position.
     * [(D) Delete shop](#d-delete-shop)
 
   * [Specific Functionality](#specific-functionality)
-    * [(R) Get user item sale history](#r-get-user-item-sale-history)
+    * [(R) Get sales history](#r-get-sales-history)
     * [(R) Get line items from shop](#r-get-line-items-from-shop)
-    * [(R) Get current active order](#r-get-current-active-order)
     * [(U) transaction of list item](#u-transaction-of-list-item)
 
 # Summary of Design
@@ -51,43 +50,65 @@ Shopify's intern challenge the Winter 2019 Developer Position.
 
 
 # API Documentation
-All api endpoints can be accessed through the `api/v1/` route
+All api endpoints can be accessed through the `api/v1/` route.
 
 ## Line Items
 ### (C) Create line item
-Create Products or Services.
-
+`POST /lineitems`
 
 ### (R) Get line item
+`GET /lineitems`
+
 ### (U) Change line item
+`PUT /lineitems`
+
 ### (D) Delete line item
+`DELETE /lineitems`
 
 ## Orders
 ### (C) Create orders
+`POST /orders`
 ### (R) Get order
+`GET orders`
 ### (U) Change order
+`PUT /orders`
 ### (D) Delete order
+`DELETE /orders`
 
 ## Order Items
 ### (C) Create order item
+`POST /orderitems`
 ### (R) Get full order item
+`GET /orderitems`
 ### (U) Change order item
+`PUT /orderitems`
 ### (D) Delete order item
+`DELETE /orderitems`
 
 ## Account
 ### (C) Create account
+`POST \accounts`
 ### (R) Get account
+`GET  \accounts`
 ### (U) Change account
+`PUT  \accounts`
 ### (D) Delete account
+`DELETE  \accounts`
 
 ## Shop
 ### (C) Create shop
+`POST \shops`
 ### (R) Get shop
+`GET  \shops`
 ### (U) Change shop
+`PUT  \shops`
 ### (D) Delete shop
+`DELETE \shops`
 
 ## Specific Functionality
-### (R) Get user item sale history 
+### (R) Get sales history 
+`GET \sales`
 ### (R) Get line items from shop
-### (R) Get current active order
+`GET \merchandises`
 ### (U) transaction of list item
+`POST \transactions`
