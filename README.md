@@ -87,28 +87,28 @@ All api endpoints can be accessed through the `api/v1/` route.
 
 ## Account
 ### (C) Create account
-`POST \accounts`
+`POST /accounts`
 ### (R) Get account
-`GET  \accounts`
+`GET /accounts`
 ### (U) Change account
-`PUT  \accounts`
+`PUT /accounts`
 ### (D) Delete account
-`DELETE  \accounts`
+`DELETE /accounts`
 
 ## Shop
 ### (C) Create shop
-`POST \shops`
+`POST /shops`
 ### (R) Get shop
-`GET  \shops`
+`GET /shops`
 ### (U) Change shop
-`PUT  \shops`
+`PUT /shops`
 ### (D) Delete shop
-`DELETE \shops`
+`DELETE /shops`
 
 ## Specific Functionality
 ### (R) Get sales history 
-`GET \sales`
+`GET /sales`
 ### (R) Get line items from shop
-`GET \merchandises`
+`GET /merchandises`
 ### (U) transaction of list item
-`POST \transactions`
+`POST /transactions`
