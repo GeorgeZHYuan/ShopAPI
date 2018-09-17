@@ -1,9 +1,8 @@
 # ShopDevInternChallenge
 
-## API Documentation:
-All current api can be accessed through /api/v1
+# Table of Contents
 
-### General CRUD API
+General
 
 * Line Items
   * (C) Create line item
@@ -35,18 +34,9 @@ All current api can be accessed through /api/v1
   * (U) Change shop
   * (D) Delete shop
 
-### Specific Queries
-
-* General
+* Specific Functionality
   * (R) Get user item sale history 
-  * (U) transaction of list item
-
-* Shop Owner
   * (R) Get line items from shop
-
-* Buyer
   * (R) Get current active order
-
-* Admin
-  * (CRUD) Access to everything
+  * (U) transaction of list item
 
