@@ -2,15 +2,15 @@
 Shopify's intern challenge the Winter 2019 Developer Position.
 
 # Table of Contents
-- [Summary of Design](#summary-of-design)
-  + [Use Case in Consideration](#use-case-consideration)
-  + [Database Design](#database-design)
-  + [Server Design](#server-design)
+* [Summary of Design](#summary-of-design)
+  * [Use Case in Consideration](#use-case-consideration)
+  * [Database Design](#database-design)
+  * [Server Design](#server-design)
  
 * API Documentation
-  * Line Items
-    * (C) Create line item
-    * (R) Get line item
+  * [Line Items](#line-items)
+    * [(C) Create line item](#c-create-line-item)
+    * [(R) Get line item](#r-get-line-item)
     * (U) Change line item
     * (D) Delete line item
 
