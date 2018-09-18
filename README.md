@@ -56,8 +56,12 @@ All api endpoints can be accessed through the `api/v1/` route.
 ### (C) Create line item
 `POST /lineitems`
 
+Create new product or service
+
 ### (R) Get line item
 `GET /lineitems`
+
+Get product or service
 
 ### (U) Change line item
 `PUT /lineitems`
