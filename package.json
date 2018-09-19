@@ -1,0 +1,20 @@
+{
+  "name": "shopdevinternchallenge",
+  "version": "1.0.0",
+  "description": "Shopify's intern challenge the Winter 2019 Developer Position.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GeorgeZHYuan/ShopDevInternChallenge.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GeorgeZHYuan/ShopDevInternChallenge/issues"
+  },
+  "homepage": "https://github.com/GeorgeZHYuan/ShopDevInternChallenge#readme"
+}
