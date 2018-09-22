@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
 
-module.exports = (knext) => {
+module.exports = (knex) => {
     return router
 };

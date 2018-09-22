@@ -10,12 +10,10 @@ const Knex = require('knex');
 const prompt = require('prompt');
 const crypto = require('crypto');
 
-const app = express();
-app.enable('trust proxy');
-
 const knex = connect();
 
 function connect () {
+  console.log('db connected once');
   const config = {
     user: process.env.SQL_USER || cloud.SQL_USER,
     password: process.env.SQL_PASSWORD || cloud.SQL_PASSWORD,
