@@ -10,12 +10,13 @@
     "name" : "account",
     "description" : "Operations on accounts"
   } ],
-  "schemes" : [ "http" ],
+  "schemes" : [ "http", "https" ],
   "paths" : {
     "/accounts" : {
       "get" : {
         "tags" : [ "account" ],
         "summary" : "get all accounts",
+        "description" : "Get all existing acconuts",
         "operationId" : "getAccounts",
         "produces" : [ "application/json" ],
         "parameters" : [ ],
@@ -33,14 +34,14 @@
       },
       "post" : {
         "tags" : [ "account" ],
-        "summary" : "Create user",
-        "description" : "This can only be done by the logged in user.",
-        "operationId" : "createUser",
+        "summary" : "Create account",
+        "description" : "Create a user account by submitting JSON",
+        "operationId" : "createAccount",
         "produces" : [ "application/json" ],
         "parameters" : [ {
           "in" : "body",
           "name" : "body",
-          "description" : "Created user object",
+          "description" : "Account fields. The value in the id field will be ignored for this operation.",
           "required" : true,
           "schema" : {
             "$ref" : "#/definitions/Account"
@@ -49,6 +50,68 @@
         "responses" : {
           "201" : {
             "description" : "successfullly created account"
+          }
+        }
+      }
+    },
+    "/accounts/{accountId}" : {
+      "put" : {
+        "tags" : [ "account" ],
+        "summary" : "Update account",
+        "description" : "Select account by id and update its info",
+        "operationId" : "updateAccount",
+        "consumes" : [ "application/x-www-form-urlencoded" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "accountId",
+          "in" : "path",
+          "description" : "Id of account",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "username",
+          "in" : "formData",
+          "description" : "change username",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "email",
+          "in" : "formData",
+          "description" : "change email",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "password",
+          "in" : "formData",
+          "description" : "change password",
+          "required" : false,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successfullly updated account"
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "account" ],
+        "summary" : "Delete account",
+        "description" : "Delete account by id",
+        "operationId" : "deleteAccount",
+        "consumes" : [ "application/x-www-form-urlencoded" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "accountId",
+          "in" : "path",
+          "description" : "Id of account",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64"
+        } ],
+        "responses" : {
+          "204" : {
+            "description" : "successfullly deleted account"
           }
         }
       }

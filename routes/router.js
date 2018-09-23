@@ -13,7 +13,11 @@ const Test = require('../controllers/Test');
 // Account routes
 router.route('/accounts')
     .get(Account.getAccounts)
-    .post(Account.createAccount);
+    .post(Account.createAccount)
+
+router.route('/accounts/:accountId')
+    .put(Account.updateAccount)
+    .delete(Account.deleteAccount)
 
 // Routes
 router.route('/shops');
