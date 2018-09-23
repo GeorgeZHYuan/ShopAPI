@@ -1,28 +1,29 @@
 const express = require('express');
 const router = express.Router();
 
-module.exports = (knex) => {
+// Controllers
+const Account = require('../controllers/Account');
+const Shop = require('../controllers/Shop');
+const Lineitem = require('../controllers/Lineitem');
+const Order = require('../controllers/Order');
+const Orderitem = require('../controllers/Orderitem');
+const Transaction = require('../controllers/Transaction');
+const Test = require('../controllers/Test');
 
-    // Controllers
-    const accounts = require('../controllers/Accounts')(knex);
-    const shops = require('../controllers/Shops')(knex);
-    const lineitems = require('../controllers/Lineitems')(knex);
-    const orders = require('../controllers/Orders')(knex);
-    const orderitems = require('../controllers/Orderitems')(knex);
-    const transactions = require('../controllers/Transactions')(knex);
-    const tests = require('../controllers/Tests')(knex);
+// Routes
+router.route('/accounts');
+router.route('/shops');
+router.route('/lineitems');
+router.route('/orders');
+router.route('/orderitems');
+router.route('/transactions');
 
-    // Routes
-    router.route('/accounts');
-    router.route('/shops');
-    router.route('/lineitems');
-    router.route('/orders');
-    router.route('/orderitems');
-    router.route('/transactions');
-    router.route('/tests/accounts')
-        .get(tests.getAccounts);
-    router.route('/tests/visits')
-        .get(tests.getVisits);
+// Test routes
+router.route('/tests/accounts')
+    .get(Test.getAccounts);
 
-    return router;
-}
+router.route('/tests/visits')
+    .get(Test.getVisits);
+
+// Exports
+module.exports = router;

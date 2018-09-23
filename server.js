@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 
 // Routes
-const routes = require('./routes/api/router.js');
+const routes = require('./routes/api/router');
 
 // Server
 const app = express();
@@ -12,11 +12,12 @@ const port = process.env.PORT || 5000;
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-// Connection instance of Google cloud DB
-const knex = require('./db/googleCloudDB');
+// Connect to Google cloud DB
+const Db = require('./db/googleCloudDB');
+Db.connect();
 
 // Routes
-app.use('/api/v1', routes(knex));
+app.use('/api/v1', routes);
 
 app.get('/', (err, res) => {
     res.send('<h1>Shopify Developer Challenge API</h1>');

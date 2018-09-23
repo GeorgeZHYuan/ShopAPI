@@ -2,16 +2,12 @@
 const cloud = require('../config/keys').db;
 const INSTANCE_CONNECTION_NAME = process.env.INSTANCE_CONNECTION_NAME || cloud.INSTANCE_CONNECTION_NAME;
 
-// console.log("cloud", cloud);
-// console.log("user", cloud.SQL_USER);
-
-const express = require('express');
 const Knex = require('knex');
-const prompt = require('prompt');
-const crypto = require('crypto');
 
-const knex = connect();
+// Instance of connection
+let knex = null;
 
+// Create connection instance to google cloud db
 function connect () {
   console.log('db connected once');
   const config = {
@@ -25,12 +21,16 @@ function connect () {
   }
 
   // Connect to the database
-  const knex = Knex({
+  knex = Knex({
     client: 'pg',
     connection: config
   });
-
-  return knex;
 }
 
-module.exports = knex;
+// Exports
+module.exports = {
+    connect,
+    knex() {
+        return knex;
+    }
+};
