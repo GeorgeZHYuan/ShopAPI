@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const crypto = require('crypto');
-const Db = require('../../db/googleCloudDB');
+const Db = require('../db/googleCloudDB');
 
 /**
  * Insert a visit record into the database.
