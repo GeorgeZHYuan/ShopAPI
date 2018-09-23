@@ -16,7 +16,7 @@
       "get" : {
         "tags" : [ "account" ],
         "summary" : "get account info",
-        "description" : "Get info from single or multiple accounts",
+        "description" : "Get info from multiple accounts",
         "operationId" : "getAccounts",
         "produces" : [ "application/json" ],
         "parameters" : [ ],
@@ -25,7 +25,7 @@
             "description" : "successful operation",
             "schema" : {
               "type" : "array",
-              "description" : "select: [] filter/: {}",
+              "description" : "select: [] filter: {}",
               "items" : {
                 "$ref" : "#/definitions/Account"
               }
@@ -56,6 +56,26 @@
       }
     },
     "/accounts/{accountId}" : {
+      "get" : {
+        "tags" : [ "account" ],
+        "summary" : "get single account info",
+        "description" : "Get info from single account",
+        "operationId" : "getSingleAccount",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "accountId",
+          "in" : "path",
+          "description" : "Id of account",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation"
+          }
+        }
+      },
       "put" : {
         "tags" : [ "account" ],
         "summary" : "Update account",

@@ -16,6 +16,7 @@ router.route('/accounts')
     .post(Account.createAccount)
 
 router.route('/accounts/:accountId')
+    .get(Account.getSingleAccount)
     .put(Account.updateAccount)
     .delete(Account.deleteAccount)
 

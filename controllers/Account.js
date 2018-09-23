@@ -6,12 +6,31 @@ const Db = require('../db/googleCloudDB');
 const getAccounts = (req, res, next) => {
     console.log('getting accounts');
 
-    let selection = [];
-    let filter = {};
+    // Check for selections and filtering
+    let selections = req.params.selections || [];
+    let filters = req.params.filters || {};
 
+    // Query db
     Db.knex()('accounts')
-        .select(selection)
-        .where(filter)
+        .select(...selections)
+        .where(filters)
+        .then((results) => {
+            res.send(results);
+        })
+        .catch((err) => {
+          next(err);
+        });
+}
+
+
+// Get single account
+const getSingleAccount = (req, res, next) => {
+    let accountId = req.params.accountId;
+    console.log(`getting account: ${accountId}`);
+
+    // Query db
+    Db.knex()('accounts')
+        .where({id: accountId})
         .then((results) => {
             res.send(results);
         })
@@ -23,11 +42,15 @@ const getAccounts = (req, res, next) => {
 // Create an account
 const createAccount = (req, res, next) => {
     console.log('creating account');
+
+    // Determing account info
     const account = {
         username: req.body.username,
         email: req.body.email,
         password: req.body.password
     }
+
+    // Query db
     Db.knex()('accounts')
         .insert(account)
         .then((results) => {
@@ -67,6 +90,7 @@ const deleteAccount = (req, res, next) => {
 
 module.exports = {
     getAccounts,
+    getSingleAccount,
     createAccount,
     updateAccount,
     deleteAccount,
