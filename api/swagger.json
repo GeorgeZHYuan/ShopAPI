@@ -15,8 +15,8 @@
     "/accounts" : {
       "get" : {
         "tags" : [ "account" ],
-        "summary" : "get all accounts",
-        "description" : "Get all existing acconuts",
+        "summary" : "get account info",
+        "description" : "Get info from single or multiple accounts",
         "operationId" : "getAccounts",
         "produces" : [ "application/json" ],
         "parameters" : [ ],
@@ -25,6 +25,7 @@
             "description" : "successful operation",
             "schema" : {
               "type" : "array",
+              "description" : "select: [] filter/: {}",
               "items" : {
                 "$ref" : "#/definitions/Account"
               }

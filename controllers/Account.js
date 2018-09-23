@@ -4,9 +4,14 @@ const Db = require('../db/googleCloudDB');
 
 // Get all accounts
 const getAccounts = (req, res, next) => {
-    console.log('getting all accounts');
-    Db.knex().select('*')
-        .from('accounts')
+    console.log('getting accounts');
+
+    let selection = [];
+    let filter = {};
+
+    Db.knex()('accounts')
+        .select(selection)
+        .where(filter)
         .then((results) => {
             res.send(results);
         })
@@ -25,7 +30,9 @@ const createAccount = (req, res, next) => {
     }
     Db.knex()('accounts')
         .insert(account)
-        .then((results) => res.status(201).send('account created'))
+        .then((results) => {
+            res.status(201).send('account created')
+        })
         .catch((err) => {
             next(err);
         });
