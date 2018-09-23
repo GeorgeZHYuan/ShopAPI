@@ -10,8 +10,12 @@ const Orderitem = require('../controllers/Orderitem');
 const Transaction = require('../controllers/Transaction');
 const Test = require('../controllers/Test');
 
+// Account routes
+router.route('/accounts')
+    .get(Account.getAccounts)
+    .post(Account.createAccount);
+
 // Routes
-router.route('/accounts');
 router.route('/shops');
 router.route('/lineitems');
 router.route('/orders');
