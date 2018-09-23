@@ -1,8 +1,10 @@
 const express = require('express');
 const router = express.Router();
+const Db = require('../db/googleCloudDB');
 
-router.get('/accounts', (req, res) => {
-    knex.select('*')
+// Get all accounts
+const getAccounts = (req, res, next) => {
+    Db.knex().select('*')
         .from('accounts')
         .then((results) => {
             res.send(results);
@@ -10,23 +12,25 @@ router.get('/accounts', (req, res) => {
         .catch((err) => {
           next(err);
         });
-});
+}
 
-router.post('/accounts/:accountId/shops', (req, res) => {
+// Create an account
+const createAccount = (req, res, next) => {
     const account = {
-        username: 'test',
-        email: 'test@test.com',
-        password: 'password'
+        username: req.body.username,
+        email: req.body.email,
+        password: req.body.password
     }
+    console.log('got to create account');
 
-    knex.insert('*')
-        .from('accounts')
-        .then((results) => {
-            res.send(results);
-        })
+    Db.knex()('accounts').insert(account)
+        .then(res.status(200).send('account created'))
         .catch((err) => {
-          next(err);
+            next(err);
         });
-});
+}
 
-module.exports = router;
+module.exports = {
+    getAccounts,
+    createAccount,
+};
