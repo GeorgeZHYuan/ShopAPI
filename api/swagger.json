@@ -62,7 +62,7 @@
           "description" : "page start number",
           "required" : false,
           "type" : "integer",
-          "default" : 1,
+          "default" : 0,
           "format" : "int64"
         }, {
           "name" : "limit",

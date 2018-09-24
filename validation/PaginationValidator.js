@@ -13,14 +13,14 @@ module.exports = function validatePaginationParams(query) {
     if (!Validator.isInt(query.limit)) {
         errors.limit = `Invalid paginiation limit. Limit must be an integer.`;
     } else if (query.limit < 1) {
-        errors.limit = `Invalid paginiation limit. Limit must be a positive integer.`;
+        errors.limit = `Invalid paginiation limit. Limit must be bigger than 0.`;
     }
 
     // Check pagination offset
     if (!Validator.isInt(query.offset)) {
         errors.offset = `Invalid paginiation offset. Offset must be an integer.`;
-    } else if (query.offset < 1) {
-        errors.offset = `Invalid paginiation offset. Offset must be a positive integer.`;
+    } else if (query.offset < 0) {
+        errors.offset = `Invalid paginiation offset. Offset cannot be negative.`;
     }
 
     return {

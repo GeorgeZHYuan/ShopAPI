@@ -16,38 +16,38 @@ const getAccounts = (req, res, next) => {
     if(!isValid) {
         console.log('invaliiiddd');
         return res.status(400).json(errors);
-    }
+    } else {
+        // Check for selections and filtering
+        let select = req.query.select || [];
 
-    // Check for selections and filtering
-    let select = req.query.select || [];
+        // Filter feilds
+        let idFilter = (req.query.id) ? ['id', 'like', `%${req.query.id}%`] : [{}];
+        let emailFilter = (req.query.email) ? ['email', 'like', `%${req.query.email}%`] : [{}];
+        let usernameFilter = (req.query.username) ? ['username', 'like', `%${req.query.username}%`] : [{}];
+        let passwordFilter = (req.query.password) ? ['password', 'like', `%${req.query.password}%`] : [{}];
 
-    // Filter feilds
-    let idFilter = (req.query.id) ? ['id', 'like', `%${req.query.id}%`] : [{}];
-    let emailFilter = (req.query.email) ? ['email', 'like', `%${req.query.email}%`] : [{}];
-    let usernameFilter = (req.query.username) ? ['username', 'like', `%${req.query.username}%`] : [{}];
-    let passwordFilter = (req.query.password) ? ['password', 'like', `%${req.query.password}%`] : [{}];
+        // Pagination
+        let offset = req.query.offset || 0;
+        let limit = req.query.limit || 10;
+        let ordering = [req.query.orderBy || 'id', req.query.sort || 'asc'];
 
-    // Pagination
-    let offset = req.query.offset || 0;
-    let limit = req.query.limit || 10;
-    let ordering = [req.query.orderBy || 'id', req.query.sort || 'asc'];
-
-    // Query db
-    Db.knex()('accounts')
-        .select(select)
-        .where(...idFilter)
-        .where(...emailFilter)
-        .where(...usernameFilter)
-        .where(...passwordFilter)
-        .offset(offset)
-        .limit(limit)
-        .orderBy(...ordering)
-        .then((results) => {
-            res.status(200).send(results);
-        })
-        .catch((err) => {
-          next(err);
-        });
+        // Query db
+        Db.knex()('accounts')
+            .select(select)
+            .where(...idFilter)
+            .where(...emailFilter)
+            .where(...usernameFilter)
+            .where(...passwordFilter)
+            .offset(offset)
+            .limit(limit)
+            .orderBy(...ordering)
+            .then((results) => {
+                res.status(200).send(results);
+            })
+            .catch((err) => {
+              next(err);
+            });
+        }
 }
 
 // Get single account
@@ -126,24 +126,27 @@ const updateAccount = (req, res, next) => {
     let params = req.body;
     params.accountId = req.params.accountId;
     const {errors, isValid} = AccountUpdateValidator(params);
+
     if (!isValid) {
         res.status(400).json(errors);
     }
-    delete params['accountId'];
+    else {
+        delete params['accountId'];
 
-    Db.knex()('accounts')
-        .where('id', req.params.accountId)
-        .update(req.body)
-        .then((result) => {
-            Db.knex()
-                .select('*')
-                .from('accounts')
-                .where({id: req.params.accountId})
-                .then((results) => res.status(200).send(results));
-        })
-        .catch((err) => {
-            next(err);
-        });
+        Db.knex()('accounts')
+            .where('id', req.params.accountId)
+            .update(req.body)
+            .then((result) => {
+                Db.knex()
+                    .select('*')
+                    .from('accounts')
+                    .where({id: req.params.accountId})
+                    .then((results) => res.status(200).send(results));
+            })
+            .catch((err) => {
+                next(err);
+            });
+    }
 }
 
 // Delete an account
