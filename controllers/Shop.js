@@ -18,7 +18,7 @@ const getShops = (req, res, next) => {
 
     // Check for selections and filtering
     let select = req.query.select || [];
-    let idFilter = (req.query.id) ? ['// IDEA: ', 'like', `%${req.query.id}%`] : [{}];
+    let idFilter = (req.query.id) ? ['like', `%${req.query.id}%`] : [{}];
     let ownerIdFilter = (req.query.ownerId) ? ['ownerid', 'like', `%${req.query.ownerId}%`] : [{}];
     let nameFilter = (req.query.name) ? ['name', 'like', `%${req.query.name}%`] : [{}];
 
