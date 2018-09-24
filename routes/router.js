@@ -4,11 +4,13 @@ const router = express.Router();
 // Controllers
 const Account = require('../controllers/Account');
 const Shop = require('../controllers/Shop');
+const Product = require('../controllers/Product');
 const Lineitem = require('../controllers/Lineitem');
 const Order = require('../controllers/Order');
 const Orderitem = require('../controllers/Orderitem');
 const Transaction = require('../controllers/Transaction');
 const Test = require('../controllers/Test');
+
 
 // Account routes
 router.route('/accounts')
@@ -29,6 +31,16 @@ router.route('/accounts/:accountId/shops/:shopId')
     .get(Shop.getSingleShop)
     .put(Shop.updateShop)
     .delete(Shop.deleteShop)
+
+// Product routes
+router.route('/products')
+    .get(Product.getProducts)
+    .post(Product.createProduct)
+
+router.route('/products/:productId')
+    .get(Product.getSingleProduct)
+    .put(Product.updateProduct)
+    .delete(Product.deleteProduct)
 
 router.route('/lineitems');
 router.route('/orders');

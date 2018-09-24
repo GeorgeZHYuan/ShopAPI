@@ -12,6 +12,9 @@
   }, {
     "name" : "shop",
     "description" : "Operations on shops"
+  }, {
+    "name" : "product",
+    "description" : "Operations on products"
   } ],
   "schemes" : [ "http", "https" ],
   "paths" : {
@@ -424,6 +427,189 @@
           }
         }
       }
+    },
+    "/products" : {
+      "get" : {
+        "tags" : [ "product" ],
+        "summary" : "Search products",
+        "description" : "Search products. Select values and filter fields for sting patterns",
+        "operationId" : "findProducts",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "fields",
+          "in" : "query",
+          "description" : "Select fields to be returned from product.",
+          "required" : false,
+          "type" : "array",
+          "items" : {
+            "type" : "string",
+            "default" : "available",
+            "enum" : [ "id", "name", "lineItemId" ]
+          },
+          "collectionFormat" : "multi"
+        }, {
+          "name" : "id",
+          "in" : "query",
+          "description" : "Product id considered for filter",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "name",
+          "in" : "query",
+          "description" : "Name considered for filter",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "lineItemId",
+          "in" : "query",
+          "description" : "Lineitem ids considered for filter",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "offset",
+          "in" : "query",
+          "description" : "Page start number",
+          "required" : false,
+          "type" : "integer",
+          "default" : 0,
+          "format" : "int64"
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "Items per page",
+          "required" : false,
+          "type" : "integer",
+          "default" : 10,
+          "format" : "int64"
+        }, {
+          "name" : "orderBy",
+          "in" : "query",
+          "description" : "Sort items by",
+          "required" : false,
+          "type" : "string",
+          "default" : "id",
+          "enum" : [ "id", "name", "lineItemId" ]
+        }, {
+          "name" : "sort",
+          "in" : "query",
+          "description" : "Sort method",
+          "required" : false,
+          "type" : "string",
+          "default" : "asc",
+          "enum" : [ "asc", "desc" ]
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/Product"
+              }
+            }
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "product" ],
+        "summary" : "Create product",
+        "description" : "Create a product",
+        "operationId" : "createProduct",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "description" : "product fields. A unique name and lineitem id must be provided. Id field here is ignored and will be auto generated in the db.",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/Product"
+          }
+        } ],
+        "responses" : {
+          "201" : {
+            "description" : "successfullly created prodcut"
+          }
+        }
+      }
+    },
+    "/products/{productId}" : {
+      "get" : {
+        "tags" : [ "product" ],
+        "summary" : "get single product by id",
+        "description" : "get single product by id",
+        "operationId" : "getSingleProduct",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "productId",
+          "in" : "path",
+          "description" : "Id of product",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation"
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "product" ],
+        "summary" : "Update product",
+        "description" : "Update product info. Only filled in fields will change in product.",
+        "operationId" : "updateProduct",
+        "consumes" : [ "application/x-www-form-urlencoded" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "productId",
+          "in" : "path",
+          "description" : "Id of product",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "name",
+          "in" : "formData",
+          "description" : "change product name",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "lineItemId",
+          "in" : "formData",
+          "description" : "Id of lineitem id",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successfullly updated product"
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "product" ],
+        "summary" : "Delete product",
+        "description" : "Delete product by id",
+        "operationId" : "deleteProduct",
+        "consumes" : [ "application/x-www-form-urlencoded" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "productId",
+          "in" : "path",
+          "description" : "Id of product",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64"
+        } ],
+        "responses" : {
+          "204" : {
+            "description" : "successfullly deleted product"
+          }
+        }
+      }
     }
   },
   "definitions" : {
@@ -476,6 +662,30 @@
         "name" : "name",
         "id" : 0,
         "ownerId" : 6
+      }
+    },
+    "Product" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "lineItemId" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "name" : {
+          "type" : "string"
+        }
+      },
+      "xml" : {
+        "name" : "Shop"
+      },
+      "example" : {
+        "lineItemId" : 6,
+        "name" : "name",
+        "id" : 0
       }
     }
   }
