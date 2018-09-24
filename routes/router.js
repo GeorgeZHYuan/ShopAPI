@@ -8,9 +8,6 @@ const Product = require('../controllers/Product');
 const Lineitem = require('../controllers/Lineitem');
 const Order = require('../controllers/Order');
 const Orderitem = require('../controllers/Orderitem');
-const Transaction = require('../controllers/Transaction');
-const Test = require('../controllers/Test');
-
 
 // Account routes
 router.route('/accounts')
@@ -42,17 +39,18 @@ router.route('/products/:productId')
     .put(Product.updateProduct)
     .delete(Product.deleteProduct)
 
-router.route('/lineitems');
+// Line item routes
+router.route('/products/:productId/lineItems')
+    .get(Lineitem.getLineItems)
+    .post(Lineitem.createLineItem)
+router.route('/products/:productId/lineitems/:lineItemId')
+    .get(Lineitem.getSingleLineItem)
+    .put(Lineitem.updateLineItem)
+    .delete(Lineitem.deleteLineItem)
+
 router.route('/orders');
 router.route('/orderitems');
-router.route('/transactions');
 
-// Test routes
-router.route('/tests/accounts')
-    .get(Test.getAccounts);
-
-router.route('/tests/visits')
-    .get(Test.getVisits);
 
 // Exports
 module.exports = router;
