@@ -103,7 +103,13 @@ const updateShop = (req, res, next) => {
     // Params
     let accountId = req.params.accountId;
     let shopId = req.params.shopId;
-    let params = req.body;
+    let ownerId = req.body.ownerId;
+    let name = req.body.name;
+
+    const params = {
+        ownerid: ownerId,
+        name: name
+    };
 
     Db.knex()('shops')
         .where('ownerid', accountId)
