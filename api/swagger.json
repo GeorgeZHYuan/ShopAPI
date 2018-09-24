@@ -9,6 +9,9 @@
   "tags" : [ {
     "name" : "account",
     "description" : "Operations on accounts"
+  }, {
+    "name" : "shop",
+    "description" : "Operations on shops"
   } ],
   "schemes" : [ "http", "https" ],
   "paths" : {
@@ -16,8 +19,8 @@
       "get" : {
         "tags" : [ "account" ],
         "summary" : "Search accounts",
-        "description" : "Search accounts. Selecting values and filter fields containing sting pattern",
-        "operationId" : "findPetsByStatus",
+        "description" : "Search accounts. Select values and filter fields for sting patterns",
+        "operationId" : "findAccounts",
         "produces" : [ "application/json" ],
         "parameters" : [ {
           "name" : "fields",
@@ -59,7 +62,7 @@
         }, {
           "name" : "offset",
           "in" : "query",
-          "description" : "page start number",
+          "description" : "Page start number",
           "required" : false,
           "type" : "integer",
           "default" : 0,
@@ -67,7 +70,7 @@
         }, {
           "name" : "limit",
           "in" : "query",
-          "description" : "items per page",
+          "description" : "Items per page",
           "required" : false,
           "type" : "integer",
           "default" : 10,
@@ -75,7 +78,7 @@
         }, {
           "name" : "orderBy",
           "in" : "query",
-          "description" : "sort items by",
+          "description" : "Sort items by",
           "required" : false,
           "type" : "string",
           "default" : "id",
@@ -83,7 +86,7 @@
         }, {
           "name" : "sort",
           "in" : "query",
-          "description" : "sort method",
+          "description" : "Sort method",
           "required" : false,
           "type" : "string",
           "default" : "asc",
@@ -91,7 +94,7 @@
         } ],
         "responses" : {
           "200" : {
-            "description" : "successful operation",
+            "description" : "Successful operation",
             "schema" : {
               "type" : "array",
               "items" : {
@@ -204,6 +207,223 @@
           }
         }
       }
+    },
+    "/accounts/{accountId}/shops" : {
+      "get" : {
+        "tags" : [ "shop" ],
+        "summary" : "Search Shops",
+        "description" : "Search Shops. Select values and filter fields for string patterns",
+        "operationId" : "findShops",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "accountId",
+          "in" : "path",
+          "description" : "Id of shop owner",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "fields",
+          "in" : "query",
+          "description" : "Select fields to be returned from shop.",
+          "required" : false,
+          "type" : "array",
+          "items" : {
+            "type" : "string",
+            "default" : "available",
+            "enum" : [ "id", "ownerId", "name" ]
+          },
+          "collectionFormat" : "multi"
+        }, {
+          "name" : "id",
+          "in" : "query",
+          "description" : "Accounts id considered for filter",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "ownerId",
+          "in" : "query",
+          "description" : "Shop id considered for filter",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "name",
+          "in" : "query",
+          "description" : "Shop name considered for filter",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "offset",
+          "in" : "query",
+          "description" : "Page start number",
+          "required" : false,
+          "type" : "integer",
+          "default" : 0,
+          "format" : "int64"
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "Items per page",
+          "required" : false,
+          "type" : "integer",
+          "default" : 10,
+          "format" : "int64"
+        }, {
+          "name" : "orderBy",
+          "in" : "query",
+          "description" : "Sort items by",
+          "required" : false,
+          "type" : "string",
+          "default" : "id",
+          "enum" : [ "id", "ownerId", "name" ]
+        }, {
+          "name" : "sort",
+          "in" : "query",
+          "description" : "Sort method",
+          "required" : false,
+          "type" : "string",
+          "default" : "asc",
+          "enum" : [ "asc", "desc" ]
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/Shop"
+              }
+            }
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "shop" ],
+        "summary" : "Create shop",
+        "description" : "Create a shop",
+        "operationId" : "createShop",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "accountId",
+          "in" : "path",
+          "description" : "Id of shop owner",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "in" : "body",
+          "name" : "body",
+          "description" : "Shop fields. An ownerId and unique name must be provided. The Id field here is ignored and will be auto generated in the db.",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/Shop"
+          }
+        } ],
+        "responses" : {
+          "201" : {
+            "description" : "successfullly created shop"
+          }
+        }
+      }
+    },
+    "/accounts/{accountId}/shops/{shopId}" : {
+      "get" : {
+        "tags" : [ "shop" ],
+        "summary" : "get single shop by id",
+        "description" : "get single shop by id",
+        "operationId" : "getSingleShop",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "accountId",
+          "in" : "path",
+          "description" : "Id of account",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "shopId",
+          "in" : "path",
+          "description" : "Id of shop",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation"
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "shop" ],
+        "summary" : "Update shop",
+        "description" : "Update shop info. Only filled in fields will change in shop.",
+        "operationId" : "updateShop",
+        "consumes" : [ "application/x-www-form-urlencoded" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "accountId",
+          "in" : "path",
+          "description" : "Id of account",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "shopId",
+          "in" : "path",
+          "description" : "Id of shop",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "ownerId",
+          "in" : "query",
+          "description" : "Id of owner",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "name",
+          "in" : "formData",
+          "description" : "change name",
+          "required" : false,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successfullly updated account"
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "shop" ],
+        "summary" : "Delete shop",
+        "description" : "Delete shop by id",
+        "operationId" : "deleteShop",
+        "consumes" : [ "application/x-www-form-urlencoded" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "accountId",
+          "in" : "path",
+          "description" : "Id of account",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "shopId",
+          "in" : "path",
+          "description" : "Id of shop",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64"
+        } ],
+        "responses" : {
+          "204" : {
+            "description" : "successfullly deleted shop"
+          }
+        }
+      }
     }
   },
   "definitions" : {
@@ -232,6 +452,30 @@
         "id" : 0,
         "email" : "email",
         "username" : "username"
+      }
+    },
+    "Shop" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "ownerId" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "name" : {
+          "type" : "string"
+        }
+      },
+      "xml" : {
+        "name" : "Shop"
+      },
+      "example" : {
+        "name" : "name",
+        "id" : 0,
+        "ownerId" : 6
       }
     }
   }

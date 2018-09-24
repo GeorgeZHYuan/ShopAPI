@@ -20,8 +20,16 @@ router.route('/accounts/:accountId')
     .put(Account.updateAccount)
     .delete(Account.deleteAccount)
 
-// Routes
-router.route('/shops');
+// Shop routes
+router.route('/accounts/:accountId/shops')
+    .get(Shop.getShops)
+    .post(Shop.createShop)
+
+router.route('/accounts/:accountId/shops/:shopId')
+    .get(Shop.getSingleShop)
+    .put(Shop.updateShop)
+    .delete(Shop.deleteShop)
+
 router.route('/lineitems');
 router.route('/orders');
 router.route('/orderitems');

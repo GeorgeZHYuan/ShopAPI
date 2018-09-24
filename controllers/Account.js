@@ -116,7 +116,6 @@ const createAccount = (req, res, next) => {
             res.status(400).json(errors);
         }
     });
-
 }
 
 // Update an account
