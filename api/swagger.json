@@ -62,7 +62,7 @@
           "description" : "page start number",
           "required" : false,
           "type" : "integer",
-          "default" : 0,
+          "default" : 1,
           "format" : "int64"
         }, {
           "name" : "limit",
@@ -98,9 +98,6 @@
                 "$ref" : "#/definitions/Account"
               }
             }
-          },
-          "400" : {
-            "description" : "Invalid status value"
           }
         }
       },

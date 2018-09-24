@@ -1,7 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const Db = require('../db/googleCloudDB');
+
+// Validators
 const PaginationValidator = require('../validation/PaginationValidator');
+const AccountCreationValidator = require('../validation/AccountValidators/AccountCreationValidator');
+const AccountUpdateValidator = require('../validation/AccountValidators/AccountUpdateValidator');
 
 // Search accounts
 const getAccounts = (req, res, next) => {
@@ -9,10 +13,6 @@ const getAccounts = (req, res, next) => {
 
     // validation
     const {errors, isValid} = PaginationValidator(req.query);
-
-    console.log('errors', errors);
-    console.log('isValid', isValid);
-
     if(!isValid) {
         console.log('invaliiiddd');
         return res.status(400).json(errors);
@@ -64,13 +64,27 @@ const getSingleAccount = (req, res, next) => {
             res.status(200).send(results);
         })
         .catch((err) => {
-          next(err);
+            next(err);
         });
+}
+
+// Check if email is taken
+const checkEmailAvailability = (email) => {
+    return Db.knex()('accounts')
+        .select('email')
+        .where('email', email)
+        .then(results => results);
 }
 
 // Create an account
 const createAccount = (req, res, next) => {
     console.log('creating account');
+
+    // validation
+    const {errors, isValid} = AccountCreationValidator(req.body);
+    if(!isValid) {
+        return res.status(400).json(errors);
+    }
 
     // Determing account info
     const account = {
@@ -80,28 +94,45 @@ const createAccount = (req, res, next) => {
     }
 
     // Query db
-    Db.knex()('accounts')
-        .insert(account)
-        .then((results) => {
-            Db.knex()
-                .select('*')
-                .from('accounts')
-                .where(account)
-                .then((results) => {
-                    res.status(201).send(results)
-            });
-        })
-        .catch((err) => {
-            next(err);
-        });
+    checkEmailAvailability(account.email)
+    .then(results => {
+        if (results.length === 0){
+            Db.knex()('accounts')
+                .insert(account)
+                .then(() => {
+                    Db.knex()('accounts')
+                    .where('email', account.email)
+                    .then((results) => {
+                        res.status(201).json(results);
+                    })
+                })
+                .catch((err) => {
+                    next(err);
+                })
+
+        }
+        else {
+            errors.email = `${account.email} has already been taken.`;
+            res.status(400).json(errors);
+        }
+    });
+
 }
 
 // Update an account
 const updateAccount = (req, res, next) => {
     console.log(`updating account ${req.params.accountId}`);
 
+    let params = req.body;
+    params.accountId = req.params.accountId;
+    const {errors, isValid} = AccountUpdateValidator(params);
+    if (!isValid) {
+        res.status(400).json(errors);
+    }
+    delete params['accountId'];
+
     Db.knex()('accounts')
-        .where({id: req.params.accountId})
+        .where('id', req.params.accountId)
         .update(req.body)
         .then((result) => {
             Db.knex()
