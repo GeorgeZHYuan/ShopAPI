@@ -21,7 +21,7 @@ const getAccounts = (req, res, next) => {
         let select = req.query.select || [];
 
         // Filter feilds
-        let idFilter = (req.query.id) ? ['id', 'like', `%${req.query.id}%`] : [{}];
+        let idFilter = req.query.id ? {id: req.query.id} : {};
         let emailFilter = (req.query.email) ? ['email', 'like', `%${req.query.email}%`] : [{}];
         let usernameFilter = (req.query.username) ? ['username', 'like', `%${req.query.username}%`] : [{}];
         let passwordFilter = (req.query.password) ? ['password', 'like', `%${req.query.password}%`] : [{}];
@@ -34,7 +34,7 @@ const getAccounts = (req, res, next) => {
         // Query db
         Db.knex()('accounts')
             .select(select)
-            .where(...idFilter)
+            .where(idFilter)
             .where(...emailFilter)
             .where(...usernameFilter)
             .where(...passwordFilter)

@@ -17,9 +17,10 @@ const getProducts= (req, res, next) => {
 
     // Check for selections and filtering
     let select = req.query.select || [];
-    let idFilter = (req.query.id) ? ['id', 'like', `%${req.query.id}%`] : [{}];
+    let idFilter = req.query.id ? {id: req.query.id} : {};
+    let lineItemIdFilter = req.query.lineItemId ? {lineitemid: req.query.lineItemId} : {};
     let nameFilter = (req.query.name) ? ['name', 'like', `%${req.query.name}%`] : [{}];
-    let lineItemIdFilter = (req.query.lineItemId) ? ['lineitemid', 'like', `%${req.query.lineItemId}%`] : [{}];
+
 
     // Pagination
     let offset = req.query.offset || 0;
@@ -29,8 +30,8 @@ const getProducts= (req, res, next) => {
     // Query db
     Db.knex()('products')
         .select(select)
-        .where(...idFilter)
-        .where(...lineItemIdFilter)
+        .where(idFilter)
+        .where(lineItemIdFilter)
         .where(...nameFilter)
         .offset(offset)
         .limit(limit)

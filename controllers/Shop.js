@@ -18,8 +18,8 @@ const getShops = (req, res, next) => {
 
     // Check for selections and filtering
     let select = req.query.select || [];
-    let idFilter = (req.query.id) ? ['id', 'like', `%${req.query.id}%`] : [{}];
-    let ownerIdFilter = (req.query.ownerId) ? ['ownerid', 'like', `%${req.query.ownerId}%`] : [{}];
+    let idFilter = (req.query.id) ? {id:req.query.id} : {};
+    let ownerIdFilter = req.query.ownerId ? {ownerid: req.query.ownerId} : {};
     let nameFilter = (req.query.name) ? ['name', 'like', `%${req.query.name}%`] : [{}];
 
     // Pagination
@@ -31,8 +31,8 @@ const getShops = (req, res, next) => {
     Db.knex()('shops')
         .select(select)
         .where('ownerid', accountId)
-        .where(...idFilter)
-        .where(...ownerIdFilter)
+        .where(idFilter)
+        .where(ownerIdFilter)
         .where(...nameFilter)
         .offset(offset)
         .limit(limit)
