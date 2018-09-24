@@ -20,7 +20,7 @@ const Db = require('./db/googleCloudDB');
 Db.connect();
 
 // Routes
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use('/api/v1', router);
 
 
