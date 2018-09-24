@@ -1,20 +1,36 @@
 const express = require('express');
 const router = express.Router();
 const Db = require('../db/googleCloudDB');
+const PaginationValidator = require('../validation/PaginationValidator');
 
 // Search accounts
 const getAccounts = (req, res, next) => {
     console.log('getting accounts');
 
+    // validation
+    const {errors, isValid} = PaginationValidator(req.query);
+
+    console.log('errors', errors);
+    console.log('isValid', isValid);
+
+    if(!isValid) {
+        console.log('invaliiiddd');
+        return res.status(400).json(errors);
+    }
+
     // Check for selections and filtering
     let select = req.query.select || [];
-    let offset = req.query.offset || null;
-    let limit = req.query.limit || null;
-    let ordering = [req.query.orderBy || 'id', req.query.sort || 'asc'];
+
+    // Filter feilds
     let idFilter = (req.query.id) ? ['id', 'like', `%${req.query.id}%`] : [{}];
     let emailFilter = (req.query.email) ? ['email', 'like', `%${req.query.email}%`] : [{}];
     let usernameFilter = (req.query.username) ? ['username', 'like', `%${req.query.username}%`] : [{}];
     let passwordFilter = (req.query.password) ? ['password', 'like', `%${req.query.password}%`] : [{}];
+
+    // Pagination
+    let offset = req.query.offset || 0;
+    let limit = req.query.limit || 10;
+    let ordering = [req.query.orderBy || 'id', req.query.sort || 'asc'];
 
     // Query db
     Db.knex()('accounts')
@@ -27,7 +43,7 @@ const getAccounts = (req, res, next) => {
         .limit(limit)
         .orderBy(...ordering)
         .then((results) => {
-            res.send(results);
+            res.status(200).send(results);
         })
         .catch((err) => {
           next(err);
@@ -45,7 +61,7 @@ const getSingleAccount = (req, res, next) => {
         .from('accounts')
         .where({id: accountId})
         .then((results) => {
-            res.send(results);
+            res.status(200).send(results);
         })
         .catch((err) => {
           next(err);
@@ -106,7 +122,7 @@ const deleteAccount = (req, res, next) => {
     Db.knex()('accounts')
         .where({id: req.params.accountId})
         .del()
-        .then((result) => res.status(204).send({}))
+        .then((result) => res.sendStatus(204))
         .catch((err) => {
             next(err);
         });
