@@ -146,14 +146,15 @@ const updateAccount = (req, res, next) => {
         });
 }
 
-
 // Delete an account
 const deleteAccount = (req, res, next) => {
     console.log(`deleting account ${req.params.accountId}`);
     Db.knex()('accounts')
         .where({id: req.params.accountId})
         .del()
-        .then((result) => res.sendStatus(204))
+        .then((results => {
+            res.status(204).json({});
+        }))
         .catch((err) => {
             next(err);
         });
