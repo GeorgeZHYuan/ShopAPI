@@ -48,9 +48,10 @@ router.route('/products/:productId/lineitems/:lineItemId')
     .put(Lineitem.updateLineItem)
     .delete(Lineitem.deleteLineItem)
 
-router.route('/orders');
-router.route('/orderitems');
 
+// Order routes
+router.route('/orders')
+router.route('/orderitems');
 
 // Exports
 module.exports = router;
