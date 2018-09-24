@@ -15,34 +15,105 @@
     "/accounts" : {
       "get" : {
         "tags" : [ "account" ],
-        "summary" : "get account info",
-        "description" : "Get info from multiple accounts",
-        "operationId" : "getAccounts",
+        "summary" : "Search accounts",
+        "description" : "Search accounts. Selecting values and filter fields containing sting pattern",
+        "operationId" : "findPetsByStatus",
         "produces" : [ "application/json" ],
-        "parameters" : [ ],
+        "parameters" : [ {
+          "name" : "fields",
+          "in" : "query",
+          "description" : "Select fields to be returned from account.",
+          "required" : false,
+          "type" : "array",
+          "items" : {
+            "type" : "string",
+            "default" : "available",
+            "enum" : [ "id", "username", "email", "password" ]
+          },
+          "collectionFormat" : "multi"
+        }, {
+          "name" : "id",
+          "in" : "query",
+          "description" : "Accounts id considered for filter",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "email",
+          "in" : "query",
+          "description" : "Emails considered for filter",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "username",
+          "in" : "query",
+          "description" : "Usernames considered for filter",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "password",
+          "in" : "query",
+          "description" : "Passwords considered for filter",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "offset",
+          "in" : "query",
+          "description" : "page start number",
+          "required" : false,
+          "type" : "integer",
+          "default" : 0,
+          "format" : "int64"
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "items per page",
+          "required" : false,
+          "type" : "integer",
+          "default" : 10,
+          "format" : "int64"
+        }, {
+          "name" : "orderBy",
+          "in" : "query",
+          "description" : "sort items by",
+          "required" : false,
+          "type" : "string",
+          "default" : "id",
+          "enum" : [ "id", "username", "email", "password" ]
+        }, {
+          "name" : "sort",
+          "in" : "query",
+          "description" : "sort method",
+          "required" : false,
+          "type" : "string",
+          "default" : "asc",
+          "enum" : [ "asc", "desc" ]
+        } ],
         "responses" : {
           "200" : {
             "description" : "successful operation",
             "schema" : {
               "type" : "array",
-              "description" : "select: [] filter: {}",
               "items" : {
                 "$ref" : "#/definitions/Account"
               }
             }
+          },
+          "400" : {
+            "description" : "Invalid status value"
           }
         }
       },
       "post" : {
         "tags" : [ "account" ],
         "summary" : "Create account",
-        "description" : "Create a user account by submitting JSON",
+        "description" : "Create a user account",
         "operationId" : "createAccount",
         "produces" : [ "application/json" ],
         "parameters" : [ {
           "in" : "body",
           "name" : "body",
-          "description" : "Account fields. The value in the id field will be ignored for this operation.",
+          "description" : "Account fields. An email, username and password must be provided. Id field here is ignored and will be auto generated in the db.",
           "required" : true,
           "schema" : {
             "$ref" : "#/definitions/Account"
@@ -58,8 +129,8 @@
     "/accounts/{accountId}" : {
       "get" : {
         "tags" : [ "account" ],
-        "summary" : "get single account info",
-        "description" : "Get info from single account",
+        "summary" : "get single account by id",
+        "description" : "get single account by id",
         "operationId" : "getSingleAccount",
         "produces" : [ "application/json" ],
         "parameters" : [ {
@@ -79,7 +150,7 @@
       "put" : {
         "tags" : [ "account" ],
         "summary" : "Update account",
-        "description" : "Select account by id and update its info",
+        "description" : "Update account info. Only filled in fields will change in account.",
         "operationId" : "updateAccount",
         "consumes" : [ "application/x-www-form-urlencoded" ],
         "produces" : [ "application/json" ],

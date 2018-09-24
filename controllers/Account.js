@@ -2,18 +2,30 @@ const express = require('express');
 const router = express.Router();
 const Db = require('../db/googleCloudDB');
 
-// Get all accounts
+// Search accounts
 const getAccounts = (req, res, next) => {
     console.log('getting accounts');
 
     // Check for selections and filtering
-    let selections = req.params.selections || [];
-    let filters = req.params.filters || {};
+    let select = req.query.select || [];
+    let offset = req.query.offset || null;
+    let limit = req.query.limit || null;
+    let ordering = [req.query.orderBy || 'id', req.query.sort || 'asc'];
+    let idFilter = (req.query.id) ? ['id', 'like', `%${req.query.id}%`] : [{}];
+    let emailFilter = (req.query.email) ? ['email', 'like', `%${req.query.email}%`] : [{}];
+    let usernameFilter = (req.query.username) ? ['username', 'like', `%${req.query.username}%`] : [{}];
+    let passwordFilter = (req.query.password) ? ['password', 'like', `%${req.query.password}%`] : [{}];
 
     // Query db
     Db.knex()('accounts')
-        .select(...selections)
-        .where(filters)
+        .select(select)
+        .where(...idFilter)
+        .where(...emailFilter)
+        .where(...usernameFilter)
+        .where(...passwordFilter)
+        .offset(offset)
+        .limit(limit)
+        .orderBy(...ordering)
         .then((results) => {
             res.send(results);
         })
@@ -22,14 +34,15 @@ const getAccounts = (req, res, next) => {
         });
 }
 
-
 // Get single account
 const getSingleAccount = (req, res, next) => {
     let accountId = req.params.accountId;
     console.log(`getting account: ${accountId}`);
 
     // Query db
-    Db.knex()('accounts')
+    Db.knex()
+        .select('*')
+        .from('accounts')
         .where({id: accountId})
         .then((results) => {
             res.send(results);
@@ -54,7 +67,13 @@ const createAccount = (req, res, next) => {
     Db.knex()('accounts')
         .insert(account)
         .then((results) => {
-            res.status(201).send('account created')
+            Db.knex()
+                .select('*')
+                .from('accounts')
+                .where(account)
+                .then((results) => {
+                    res.status(201).send(results)
+            });
         })
         .catch((err) => {
             next(err);
@@ -64,11 +83,16 @@ const createAccount = (req, res, next) => {
 // Update an account
 const updateAccount = (req, res, next) => {
     console.log(`updating account ${req.params.accountId}`);
+
     Db.knex()('accounts')
         .where({id: req.params.accountId})
         .update(req.body)
         .then((result) => {
-            res.status(200).send('account updated');
+            Db.knex()
+                .select('*')
+                .from('accounts')
+                .where({id: req.params.accountId})
+                .then((results) => res.status(200).send(results));
         })
         .catch((err) => {
             next(err);
@@ -82,7 +106,7 @@ const deleteAccount = (req, res, next) => {
     Db.knex()('accounts')
         .where({id: req.params.accountId})
         .del()
-        .then((result) => res.status(204).send('account deleted'))
+        .then((result) => res.status(204).send({}))
         .catch((err) => {
             next(err);
         });
