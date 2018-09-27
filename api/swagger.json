@@ -4,7 +4,7 @@
     "version" : "1.0.0",
     "title" : "Shopify Developer Challenge API"
   },
-  "host" : "localhost:5000",
+  "host" : "http://eminent-expanse-216713.appspot.com",
   "basePath" : "/api/v1",
   "tags" : [ {
     "name" : "account",

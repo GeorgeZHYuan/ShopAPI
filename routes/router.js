@@ -48,6 +48,9 @@ router.route('/products/:productId/lineitems/:lineItemId')
     .put(Lineitem.updateLineItem)
     .delete(Lineitem.deleteLineItem)
 
+router.get('/test', (req, res) => {
+    res.send('works??');
+});
 
 // Order routes
 router.route('/orders')

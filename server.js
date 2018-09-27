@@ -20,12 +20,12 @@ const Db = require('./db/googleCloudDB');
 Db.connect();
 
 // Routes
-app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use('/api/v1', router);
 
 
 app.get('/', (err, res) => {
-    res.send('<h1>Shopify Developer Challenge API</h1>');
+    res.send('<h1>Shopify Developer Challenge API</h1><div><a href="/api-docs">documentation</a></div>');
 });
 
 app.listen(port, () => console.log(`Server running on port ${port}`));
